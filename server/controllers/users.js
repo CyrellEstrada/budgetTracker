@@ -20,7 +20,6 @@ const getUserByUserId = (req, res) => {
 }
 
 const createUser = (req, res) => {
-  console.log(req.body)
   const { first_name, last_name, email, username, password } = req.body
   let sql = "INSERT INTO users (first_name, last_name, email, username, password) VALUES (?, ?, ?, ?, ?)"
   sql = mysql.format(sql, [ first_name, last_name, email, username, password ])
