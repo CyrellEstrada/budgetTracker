@@ -9,8 +9,8 @@ const getAllUsers = (req, res) => {
   })
 }
 
-const getUserById = (req, res) => {
-  let sql = "SELECT * FROM users WHERE id = ?"
+const getUserByUserId = (req, res) => {
+  let sql = "SELECT * FROM users WHERE user_id = ?"
   sql = mysql.format(sql, [ req.params.id ])
 
   pool.query(sql, (err, rows) => {
@@ -20,9 +20,10 @@ const getUserById = (req, res) => {
 }
 
 const createUser = (req, res) => {
-  const { firstName, lastName } = req.body
-  let sql = "INSERT INTO users (first_name, last_name) VALUES (?, ?)"
-  sql = mysql.format(sql, [ firstName, lastName ])
+  console.log(req.body)
+  const { first_name, last_name, email, username, password } = req.body
+  let sql = "INSERT INTO users (first_name, last_name, email, username, password) VALUES (?, ?, ?, ?, ?)"
+  sql = mysql.format(sql, [ first_name, last_name, email, username, password ])
 
   pool.query(sql, (err, results) => {
     if (err) return handleSQLError(res, err)
@@ -31,9 +32,9 @@ const createUser = (req, res) => {
 }
 
 const updateUserById = (req, res) => {
-  const { firstName, lastName } = req.body
-  let sql = "UPDATE users SET first_name = ?, last_name = ? WHERE id = ?"
-  sql = mysql.format(sql, [ firstName, lastName, req.params.id ])
+  const { first_name, last_name, email, username, password } = req.body
+  let sql = "UPDATE users SET first_name = ?, last_name = ?, email = ?, username = ?, password = ? WHERE user_id = ?"
+  sql = mysql.format(sql, [ first_name, last_name, email, username, password, parseInt(req.params.id) ])
 
   pool.query(sql, (err, results) => {
     if (err) return handleSQLError(res, err)
@@ -41,9 +42,9 @@ const updateUserById = (req, res) => {
   })
 }
 
-const deleteUserByFirstName = (req, res) => {
-  let sql = "DELETE FROM users WHERE first_name = ?"
-  sql = mysql.format(sql, [ req.params.first_name ])
+const deleteUserByUserId = (req, res) => {
+  let sql = "DELETE FROM users WHERE user_id = ?"
+  sql = mysql.format(sql, [ parseInt(req.params.id) ])
 
   pool.query(sql, (err, results) => {
     if (err) return handleSQLError(res, err)
@@ -53,8 +54,8 @@ const deleteUserByFirstName = (req, res) => {
 
 module.exports = {
   getAllUsers,
-  getUserById,
+  getUserByUserId,
   createUser,
   updateUserById,
-  deleteUserByFirstName
+  deleteUserByUserId
 }
