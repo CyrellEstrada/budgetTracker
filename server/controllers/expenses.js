@@ -2,16 +2,18 @@ const mysql = require('mysql2')
 const pool = require('../../sql/connection')
 const { handleSQLError } = require('../../sql/error')
 
-const getAllExpenses = (req, res) => {
-    // May or may not use this
-  pool.query("SELECT * FROM expenses", (err, rows) => {
+const getAllExpensesbyUserId = (req, res) => {
+  let sql = "SELECT * FROM expenses WHERE user_id = ?"
+  sql = mysql.format(sql, [ req.params.id ])
+
+  pool.query(sql, (err, rows) => {
     if (err) return handleSQLError(res, err)
     return res.json(rows);
   })
 }
 
-const getExpensesByUserId = (req, res) => {
-  let sql = "SELECT * FROM user_expenses WHERE user_id = ?"
+const getExpenseById = (req, res) => {
+  let sql = "SELECT * FROM expenses WHERE id = ?"
   sql = mysql.format(sql, [ req.params.id ])
 
   pool.query(sql, (err, rows) => {
@@ -53,8 +55,8 @@ const deleteExpenseById = (req, res) => {
 }
 
 module.exports = {
-  getAllExpenses,
-  getExpensesById,
+  getAllExpensesbyUserId,
+  getExpenseById,
   createExpense,
   updateExpenseById,
   deleteExpenseById
