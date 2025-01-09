@@ -2,7 +2,7 @@ const mysql = require('mysql2')
 const pool = require('../../sql/connection')
 const { handleSQLError } = require('../../sql/error')
 
-const getAllIncomesbyUserId = (req, res) => {
+const getAllIncomesByUserId = (req, res) => {
   let sql = "SELECT * FROM income WHERE user_id = ?"
   sql = mysql.format(sql, [ req.params.id ])
 
@@ -55,7 +55,7 @@ const deleteIncomeById = (req, res) => {
 }
 
 module.exports = {
-  getAllIncomesbyUserId,
+  getAllIncomesByUserId,
   getIncomeById,
   createIncome,
   updateIncomeById,

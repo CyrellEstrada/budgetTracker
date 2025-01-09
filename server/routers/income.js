@@ -3,7 +3,7 @@ const incomesController = require('../controllers/income')
 const { checkJwt } = require('../middleware')
 const router = express.Router()
 
-router.get('/all/:id', incomesController.getAllIncomesbyUserId)
+router.get('/all/:id', incomesController.getAllIncomesByUserId)
 
 router.get('/:id', incomesController.getIncomeById)
 
