@@ -4,6 +4,7 @@ const usersRouter = require('./server/routers/users');
 const budgetRouter = require('./server/routers/budget')
 const expensesRouter = require('./server/routers/expenses')
 const incomesRouter = require('./server/routers/income')
+const categoriesRouter = require('./server/routers/categories')
 const authRouter = require('./server/routers/auth');
 const app = express();
 const port = process.env.PORT || 4001;
@@ -13,6 +14,7 @@ app.use('/users', usersRouter)
 app.use('/budget', budgetRouter)
 app.use('/expenses', expensesRouter)
 app.use('/income', incomesRouter)
+app.use('/categories', categoriesRouter)
 app.use('/auth', authRouter)
 
 app.get('/', (req, res) => {
