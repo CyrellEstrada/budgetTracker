@@ -23,9 +23,9 @@ const getExpenseById = (req, res) => {
 }
 
 const createExpense = (req, res) => {
-  const { name, amount, category_id } = req.body
-  let sql = "INSERT INTO expenses (name, amount, category_id) VALUES (?, ?, ?)"
-  sql = mysql.format(sql, [ name, amount, category_id ])
+  const { user_id, name, amount, category_id } = req.body
+  let sql = "INSERT INTO expenses (user_id, name, amount, category_id) VALUES (?, ?, ?, ?)"
+  sql = mysql.format(sql, [ user_id, name, amount, category_id ])
 
   pool.query(sql, (err, results) => {
     if (err) return handleSQLError(res, err)
@@ -35,8 +35,8 @@ const createExpense = (req, res) => {
 
 const updateExpenseById = (req, res) => {
   const { name, amount, category_id } = req.body
-  let sql = "UPDATE expenses SET name = ?, amount = ?, category_id = ?, WHERE id = ?"
-  sql = mysql.format(sql, [ name, amount, category_id, req.params.id ])
+  let sql = "UPDATE expenses SET name = ?, amount = ?, category_id = ? WHERE id = ?"
+  sql = mysql.format(sql, [ name, amount, category_id, parseInt(req.params.id) ])
 
   pool.query(sql, (err, results) => {
     if (err) return handleSQLError(res, err)
@@ -45,8 +45,8 @@ const updateExpenseById = (req, res) => {
 }
 
 const deleteExpenseById = (req, res) => {
-  let sql = "DELETE FROM expense WHERE id = ?"
-  sql = mysql.format(sql, [ req.params.id ])
+  let sql = "DELETE FROM expenses WHERE id = ?"
+  sql = mysql.format(sql, [ parseInt(req.params.id) ])
 
   pool.query(sql, (err, results) => {
     if (err) return handleSQLError(res, err)
