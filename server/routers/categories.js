@@ -3,14 +3,14 @@ const categoriesController = require('../controllers/categories')
 const { checkJwt } = require('../middleware')
 const router = express.Router()
 
-router.get('/all/:id', categoriesController.getAllCategoriesByUserId)
+router.get('/all/:id', checkJwt, categoriesController.getAllCategoriesByUserId)
 
-router.get('/:id', categoriesController.getCategoryById)
+router.get('/:id', checkJwt, categoriesController.getCategoryById)
 
-router.post('/', categoriesController.createCategory)
+router.post('/', checkJwt, categoriesController.createCategory)
 
-router.put('/:id', categoriesController.updateCategoryById)
+router.put('/:id', checkJwt, categoriesController.updateCategoryById)
 
-router.delete('/:id', categoriesController.deleteCategoryById)
+router.delete('/:id', checkJwt, categoriesController.deleteCategoryById)
 
 module.exports = router

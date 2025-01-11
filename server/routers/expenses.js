@@ -3,14 +3,14 @@ const expensesController = require('../controllers/expenses')
 const { checkJwt } = require('../middleware')
 const router = express.Router()
 
-router.get('/all/:id', expensesController.getAllExpensesbyUserId)
+router.get('/all/:id', checkJwt, expensesController.getAllExpensesbyUserId)
 
-router.get('/:id', expensesController.getExpenseById)
+router.get('/:id', checkJwt, expensesController.getExpenseById)
 
-router.post('/', expensesController.createExpense)
+router.post('/', checkJwt, expensesController.createExpense)
 
-router.put('/:id', expensesController.updateExpenseById)
+router.put('/:id', checkJwt, expensesController.updateExpenseById)
 
-router.delete('/:id', expensesController.deleteExpenseById)
+router.delete('/:id', checkJwt, expensesController.deleteExpenseById)
 
 module.exports = router
