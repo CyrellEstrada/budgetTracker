@@ -20,15 +20,25 @@ const getUserByUserId = (req, res) => {
 }
 
 const createUser = (req, res) => {
-  const { first_name, last_name, email, username, autho_id} = req.body
-  let sql = "INSERT INTO users (first_name, last_name, email, username, autho_id) VALUES (?, ?, ?, ?, ?)"
-  sql = mysql.format(sql, [ first_name, last_name, email, username, autho_id ])
+  const { autho_id, email, first_name, last_name, username } = req.body;
 
-  pool.query(sql, (err, results) => {
-    if (err) return handleSQLError(res, err)
-    return res.json({ newId: results.insertId });
-  })
-}
+  const sql = `
+    INSERT INTO users (autho_id, email, first_name, last_name, username)
+    VALUES (?, ?, ?, ?, ?)
+    ON DUPLICATE KEY UPDATE
+      email      = VALUES(email),
+      first_name = VALUES(first_name),
+      last_name  = VALUES(last_name),
+      username   = VALUES(username)
+  `;
+
+  pool.query(sql, [autho_id, email, first_name, last_name, username], (err, results) => {
+    if (err) {
+      return res.status(500).json({ error: err.sqlMessage });
+    }
+    return res.json({ message: 'User upserted successfully.' });
+  });
+};
 
 const updateUserById = (req, res) => {
   const { first_name, last_name, email, username, password } = req.body
