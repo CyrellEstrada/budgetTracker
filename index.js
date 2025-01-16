@@ -5,10 +5,14 @@ const budgetRouter = require('./server/routers/budget')
 const expensesRouter = require('./server/routers/expenses')
 const incomesRouter = require('./server/routers/income')
 const categoriesRouter = require('./server/routers/categories')
+const cors = require('cors')
 const app = express();
 const port = process.env.PORT || 4001;
 
+app.use(cors());
+
 app.use(express.json())
+app.options('*', cors())
 app.use('/users', usersRouter)
 app.use('/budget', budgetRouter)
 app.use('/expenses', expensesRouter)
